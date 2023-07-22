@@ -94,11 +94,11 @@ void app_main()
 
     ESP_LOGI(TAG, "[2.4] Register all elements to audio pipeline");
     audio_pipeline_register(pipeline, i2s_stream_reader, "reader");
-    audio_pipeline_register(pipeline, i2s_stream_writer, "i2s_stream");
+    audio_pipeline_register(pipeline, i2s_stream_writer, "writer");
     audio_pipeline_register(pipeline, equalizer, "equ");
 
-    ESP_LOGI(TAG, "[2.5] Link it together [codec_chip]-->algorithm-->i2s_stream-->[dac]");
-    const char *link_rec[3] = {"reader", "equ", "i2s_stream"};
+    ESP_LOGI(TAG, "[2.5] Link it together i2s_stream_reader-->equalizer-->i2s_stream_writer-->[dac]");
+    const char *link_rec[3] = {"reader", "equ", "writer"};
     audio_pipeline_link(pipeline, &link_rec[0], 3);
 
     ESP_LOGI(TAG, "[3.0] Set up event listener");
