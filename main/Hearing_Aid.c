@@ -30,11 +30,7 @@ static esp_err_t i2s_driver_init(i2s_port_t port, i2s_channel_fmt_t channels, i2
         .sample_rate = I2S_SAMPLE_RATE,
         .bits_per_sample = bits,
         .channel_format = channels,
-#if (ESP_IDF_VERSION < ESP_IDF_VERSION_VAL(4, 3, 0))
-        .communication_format = I2S_COMM_FORMAT_I2S,
-#else
         .communication_format = I2S_COMM_FORMAT_STAND_I2S,
-#endif
         .tx_desc_auto_clear = true,
         .dma_buf_count = 8,
         .dma_buf_len = 64,
