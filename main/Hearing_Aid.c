@@ -20,7 +20,7 @@ static const char *TAG = "HEARING_AID";
 #define I2S_CHANNELS        I2S_CHANNEL_FMT_RIGHT_LEFT
 #define I2S_BITS            CODEC_ADC_BITS_PER_SAMPLE
 
-#define DEFAULT_REF_DELAY_MS    0
+#define DEFAULT_REF_DELAY_MS    0 //borrar
 #define BUFFER_SIZER    8 * 1024
 
 static esp_err_t i2s_driver_init(i2s_port_t port, i2s_channel_fmt_t channels, i2s_bits_per_sample_t bits)
@@ -57,7 +57,6 @@ void app_main()
     esp_log_level_set(TAG, ESP_LOG_INFO);
 
     ESP_LOGI(TAG, "[1.0] Start codec chip");
-    i2s_driver_init(I2S_NUM_0, I2S_CHANNELS, I2S_BITS);
 
     audio_board_handle_t board_handle = (audio_board_handle_t) audio_calloc(1, sizeof(struct audio_board_handle));
     audio_hal_codec_config_t audio_codec_cfg = AUDIO_CODEC_DEFAULT_CONFIG();
@@ -83,7 +82,7 @@ void app_main()
 
     ESP_LOGI(TAG, "[2.2] Create equalizer");
     equalizer_cfg_t eq_cfg = DEFAULT_EQUALIZER_CONFIG();
-    int set_gain[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    int set_gain[] = { 0, 0, 0, 0, 0, 0, 30, 0, 0, 0,   0, 0, 0, 0, 0, 0, 30, 0, 0, 0,};
     eq_cfg.set_gain = set_gain; // The size of gain array should be the multiplication of NUMBER_BAND and number channels of audio stream data. The minimum of gain is -13 dB.
     audio_element_handle_t equalizer = equalizer_init(&eq_cfg);
 
