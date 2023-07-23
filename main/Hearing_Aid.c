@@ -20,36 +20,7 @@ static const char *TAG = "HEARING_AID";
 #define I2S_CHANNELS        I2S_CHANNEL_FMT_RIGHT_LEFT
 #define I2S_BITS            CODEC_ADC_BITS_PER_SAMPLE
 
-#define DEFAULT_REF_DELAY_MS    0 //borrar
 #define BUFFER_SIZER    8 * 1024
-
-static esp_err_t i2s_driver_init(i2s_port_t port, i2s_channel_fmt_t channels, i2s_bits_per_sample_t bits)
-{
-    i2s_config_t i2s_cfg = {
-        .mode = I2S_MODE_MASTER | I2S_MODE_TX | I2S_MODE_RX,
-        .sample_rate = I2S_SAMPLE_RATE,
-        .bits_per_sample = bits,
-        .channel_format = channels,
-        .communication_format = I2S_COMM_FORMAT_STAND_I2S,
-        .tx_desc_auto_clear = true,
-        .dma_buf_count = 8,
-        .dma_buf_len = 64,
-        .intr_alloc_flags = ESP_INTR_FLAG_LEVEL2 | ESP_INTR_FLAG_IRAM,
-    };
-
-    i2s_driver_install(port, &i2s_cfg, 0, NULL);
-    board_i2s_pin_t board_i2s_pin = {0};
-    i2s_pin_config_t i2s_pin_cfg;
-    get_i2s_pins(port, &board_i2s_pin);
-    i2s_pin_cfg.bck_io_num = board_i2s_pin.bck_io_num;
-    i2s_pin_cfg.ws_io_num = board_i2s_pin.ws_io_num;
-    i2s_pin_cfg.data_out_num = board_i2s_pin.data_out_num;
-    i2s_pin_cfg.data_in_num = board_i2s_pin.data_in_num;
-    i2s_pin_cfg.mck_io_num = board_i2s_pin.mck_io_num;
-    i2s_set_pin(port, &i2s_pin_cfg);
-
-    return ESP_OK;
-}
 
 void app_main()
 {
@@ -82,7 +53,8 @@ void app_main()
 
     ESP_LOGI(TAG, "[2.2] Create equalizer");
     equalizer_cfg_t eq_cfg = DEFAULT_EQUALIZER_CONFIG();
-    int set_gain[] = { 0, 0, 0, 0, 0, 0, 30, 0, 0, 0,   0, 0, 0, 0, 0, 0, 30, 0, 0, 0,};
+    int set_gain[] = { 0, 0, 10, 0, 0, 0, 0, 0, 0, 0,   0, 0, 10, 0, 0, 0, 0, 0, 0, 0,};
+    // int set_gain[] = { 0, 0, 10,15,20,15,15,10,10,0,0, 0, 10,15,20,15,15,10,10,0};
     eq_cfg.set_gain = set_gain; // The size of gain array should be the multiplication of NUMBER_BAND and number channels of audio stream data. The minimum of gain is -13 dB.
     audio_element_handle_t equalizer = equalizer_init(&eq_cfg);
 
