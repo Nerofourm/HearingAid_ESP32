@@ -5,7 +5,6 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "esp_log.h"
-#include "driver/i2s.h"
 #include "audio_element.h"
 #include "audio_pipeline.h"
 #include "board.h"
@@ -53,8 +52,26 @@ void app_main()
 
     ESP_LOGI(TAG, "[2.2] Create equalizer");
     equalizer_cfg_t eq_cfg = DEFAULT_EQUALIZER_CONFIG();
-    int set_gain[] = { 0, 0, 10, 0, 0, 0, 0, 0, 0, 0,   0, 0, 10, 0, 0, 0, 0, 0, 0, 0,};
+    eq_cfg.samplerate=44100;
+    eq_cfg.channel=2;
+    int set_gain[] = { 0, 0, 7, 9, 10, 9, 12, 17, 17, 0,    0, 0, 14, 0, 11, 17, 21, 23, 22, 0};
+
+    // int set_gain[] = { 0, 0, 9, 11, 10, 9, 12, 19, 17, 0,    0, 0, 16, 4, 11, 17, 21, 23, 22, 0};
+
+    // int set_gain[] = { 0, 0, 10, 11, 10, 9, 12, 18, 17, 0,    0, 0, 15, 6, 11, 17, 21, 23, 22, 0};
+
     // int set_gain[] = { 0, 0, 10,15,20,15,15,10,10,0,0, 0, 10,15,20,15,15,10,10,0};
+
+    // int set_gain[] = { 25, 13, 13, 9, 10, 9, 12, 17, 17, 0,    25, 13, 13, 0, 11, 17, 21, 23, 22, 0};
+
+    // int set_gain[] = { -13,-13,20,10,-13,-13,-13,20,20,-13,    -13,-13,20,10,-13,-13,-13,20,20,-13};
+
+    // int set_gain[] = { 0, 0, 7, 9, 10, 9, 12, 17, 30, 30,    0, 0, 14, 0, 11, 17, 21, 23, 30, 30};
+
+    // int set_gain[] = { 30, 30, 30, 30, 30, 30, 30, 30, 30, 30,    30, 30, 30, 30, 30, 30, 30, 30, 30, 30};
+
+    // int set_gain[] = { 0,0,0,0,0,0,0,0,0,0,40,40,40,40,40,40,40,40,40,40};
+
     eq_cfg.set_gain = set_gain; // The size of gain array should be the multiplication of NUMBER_BAND and number channels of audio stream data. The minimum of gain is -13 dB.
     audio_element_handle_t equalizer = equalizer_init(&eq_cfg);
 
